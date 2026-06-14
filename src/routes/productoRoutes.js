@@ -1,3 +1,5 @@
+const validarProducto = require("../middleware/validarProducto");
+
 const express = require("express");
 
 const router = express.Router();
@@ -12,6 +14,6 @@ router.get("/", obtenerProductos);
 
 router.get("/:id", obtenerProductoPorId);
 
-router.post("/", crearProducto);
+router.post("/", validarProducto, crearProducto);
 
 module.exports = router;
