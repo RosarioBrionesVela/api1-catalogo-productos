@@ -47,8 +47,54 @@ const crearProducto = async (req, res) => {
     }
 };
 
+const actualizarProducto = async (req, res) => {
+    try {
+        const producto = await Producto.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { returnDocument: "after" }
+        );
+
+        if (!producto) {
+            return res.status(404).json({
+                mensaje: "Producto no encontrado"
+            });
+        }
+
+        res.json(producto);
+
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Error al actualizar producto"
+        });
+    }
+};
+
+const eliminarProducto = async (req, res) => {
+    try {
+        const producto = await Producto.findByIdAndDelete(req.params.id);
+
+        if (!producto) {
+            return res.status(404).json({
+                mensaje: "Producto no encontrado"
+            });
+        }
+
+        res.json({
+            mensaje: "Producto eliminado correctamente"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Error al eliminar producto"
+        });
+    }
+};
+
 module.exports = {
     obtenerProductos,
     obtenerProductoPorId,
-    crearProducto
+    crearProducto,
+    actualizarProducto,
+    eliminarProducto
 };
