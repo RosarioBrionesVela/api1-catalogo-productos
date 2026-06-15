@@ -1,3 +1,5 @@
+const validarObjectId = require("../middleware/validarObjectId");
+
 const validarProducto = require("../middleware/validarProducto");
 
 const express = require("express");
@@ -14,12 +16,12 @@ const {
 
 router.get("/", obtenerProductos);
 
-router.get("/:id", obtenerProductoPorId);
+router.get("/:id", validarObjectId, obtenerProductoPorId);
 
 router.post("/", validarProducto, crearProducto);
 
-router.put("/:id", validarProducto, actualizarProducto);
+router.put("/:id", validarObjectId, validarProducto, actualizarProducto);
 
-router.delete("/:id", eliminarProducto);
+router.delete("/:id", validarObjectId, eliminarProducto);
 
 module.exports = router;
