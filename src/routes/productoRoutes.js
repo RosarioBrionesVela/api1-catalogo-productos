@@ -1,10 +1,10 @@
-const validarObjectId = require("../middleware/validarObjectId");
-
-const validarProducto = require("../middleware/validarProducto");
-
 const express = require("express");
 
 const router = express.Router();
+
+const validarObjectId = require("../middleware/validarObjectId");
+const validarProducto = require("../middleware/validarProducto");
+const validarAppToken = require("../middleware/validarAppToken");
 
 const {
     obtenerProductos,
@@ -14,14 +14,41 @@ const {
     eliminarProducto
 } = require("../controllers/productoController");
 
-router.get("/", obtenerProductos);
+// Todas las rutas protegidas con Application Token
 
-router.get("/:id", validarObjectId, obtenerProductoPorId);
+router.get(
+    "/",
+    validarAppToken,
+    obtenerProductos
+);
 
-router.post("/", validarProducto, crearProducto);
+router.get(
+    "/:id",
+    validarAppToken,
+    validarObjectId,
+    obtenerProductoPorId
+);
 
-router.put("/:id", validarObjectId, validarProducto, actualizarProducto);
+router.post(
+    "/",
+    validarAppToken,
+    validarProducto,
+    crearProducto
+);
 
-router.delete("/:id", validarObjectId, eliminarProducto);
+router.put(
+    "/:id",
+    validarAppToken,
+    validarObjectId,
+    validarProducto,
+    actualizarProducto
+);
+
+router.delete(
+    "/:id",
+    validarAppToken,
+    validarObjectId,
+    eliminarProducto
+);
 
 module.exports = router;
