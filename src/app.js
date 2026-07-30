@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
-const mongoSanitize = require("express-mongo-sanitize");
+
+const sanitizeRequest = require("./middleware/sanitizeRequest");
 
 const app = express();
 
@@ -10,8 +11,8 @@ app.use(helmet());
 // Middleware para leer JSON
 app.use(express.json());
 
-// Sanitización 
-// app.use(mongoSanitize());
+// Sanitización contra NoSQL Injection
+app.use(sanitizeRequest);
 
 app.get("/", (req, res) => {
     res.send("API funcionando correctamente");
